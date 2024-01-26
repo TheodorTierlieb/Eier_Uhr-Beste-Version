@@ -6,7 +6,7 @@
 #include "wlan.h"
 #include "RTClib.h"
 #include "webserver.h"
-
+#include "neopixel_controller.h"
 
 RTC_DS3231 rtc;
 
@@ -177,6 +177,8 @@ void setup()
   connectToWiFi();  // Verbindung zum WLAN herstellen
 
   startWebserver(menu, subMenuTimes, 10); // Startet Webserver
+
+  // initializeNeoPixel();
 
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
   {
@@ -350,7 +352,23 @@ void loop()
       strcpy(currentMenuItem, menu[8]); // Speichere den Namen des Menüpunkts
     }
   }
-
+// LED Grüne
+//  for (int i = 0; i < 4; ++i) {
+//    turnOnLED(i, strip.Color(0, 255, 0));  // Grün
+//  }
+ 
+  // LED Gelb
+//  for (int i = 4; i < 6; ++i) {
+//    turnOnLED(i, strip.Color(255, 255, 0));  // Gelb
+//  }
+ 
+  // LED Rot (zeitgleich mit LED Grün)
+//  for (int i = 6; i < 8; ++i) {
+//    turnOnLED(i, strip.Color(255, 0, 0));  // Rot
+//  }
+ 
+  // Blinken in bunten Farben als Abschluss
+//  blinkColor(strip.Color(255, 0, 0), 3);  // Blinken in Rot
   if (isEndAnimationActive)
   {
     showEndAnimation(); // Starte die Endanimation
