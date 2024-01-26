@@ -8,7 +8,6 @@
 #include "webserver.h"
 
 
-
 RTC_DS3231 rtc;
 
 #define PIN_A 32
@@ -16,8 +15,8 @@ RTC_DS3231 rtc;
 #define PIN_T1 2  // Schnellzugriff Programm 1
 #define PIN_T2 4  // Schnellzugriff Programm 8
 #define PIN_T3 33 // Encoder-Taster
-#define PIN_BUZZER 13 // Buzzer-Pin
-
+#define PIN_BUZZER 12 // Buzzer-Pin
+#define PIN_Neo 13 // Neopixel
 
 RotaryEncoder encoder(PIN_A, PIN_B, RotaryEncoder::LatchMode::FOUR3);
 
@@ -112,7 +111,7 @@ void updateCountDown()
       isEndAnimationActive = true; // Starte die Endanimation, wenn der Countdown abgelaufen ist
       animationStartTime = millis();
       countDownActive = false;
-      digitalWrite(PIN_BUZZER, HIGH); // Buzzer einschalten
+      digitalWrite(PIN_BUZZER, LOW); // Buzzer einschalten
     }
     else
     {
@@ -174,7 +173,7 @@ void setup()
   pinMode(PIN_BUZZER, OUTPUT); // Buzzer-Pin als Ausgang festlegen
   Serial.begin(115200);
   Serial.println("Einfaches Beispiel zum Rotary Encoder");
- 
+
   connectToWiFi();  // Verbindung zum WLAN herstellen
 
   startWebserver(menu, subMenuTimes, 10); // Startet Webserver
@@ -190,7 +189,7 @@ void setup()
     Serial.println("RTC nicht gefunden");
     while (1);
   }
-  rtc.adjust(DateTime(__DATE__, __TIME__));
+  rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   showDateTime();
 }
 
@@ -226,6 +225,7 @@ void showEndAnimation()
  
 void loop()
 {
+
   encoder.tick();
   int newPos = encoder.getPosition();
  
@@ -350,7 +350,7 @@ void loop()
       strcpy(currentMenuItem, menu[8]); // Speichere den Namen des Menüpunkts
     }
   }
- 
+
   if (isEndAnimationActive)
   {
     showEndAnimation(); // Starte die Endanimation
